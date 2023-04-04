@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>发送消息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    
+
+    <form id="message-form" onsubmit="return sendMessage()">
+
+        <div class="switch-container">
+            <label class="switch-label" for="switch">即时输入</label>
+            <label class="switch">
+                <input type="checkbox" id="switch">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div style="height: 1em;"></div>
+
+        <textarea id="message" name="message" rows="8"></textarea>
+
+        <button type="submit" onclick="return sendMessage()">发送</button>
+
+    </form>
+
+    <script src="../static/socket.io.js"></script>
+    <script src="../static/my.js"></script>
+</body>
+
+</html>
