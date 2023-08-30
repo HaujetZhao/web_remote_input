@@ -58,7 +58,9 @@ function send_input(event) {
         // 而是直接 deleteContentBackward 删除字符
         // 不得以做此兼容
         socket.emit("key", "Backspace");
-    } 
+    } else {
+        socket.emit("event", message.inputType)
+    }
 }
 
 // 发送粘贴的内容
@@ -81,6 +83,40 @@ function send_key(event) {
 }
 
 
+function send_change(event) {
+    socket.emit("change", event.data);
+}
+
+//========================关于获取、设置服务端剪贴板==========================================
+
+
+async function getClipboardFromServer() {
+    const response = await fetch('/get-clipboard');
+    const data = await response.json();
+    
+    try {
+        await navigator.clipboard.writeText(data.content);
+    } catch (err) {
+        alert("剪贴板操作失败: " + err);
+    }
+}
+
+async function sendClipboardToServer() {
+    try {
+        const text = await navigator.clipboard.readText();
+
+        const formData = new FormData();
+        formData.append("clipboard", text);
+        
+        fetch('/set-clipboard', {
+            method: 'POST',
+            body: formData
+        });
+    } catch (err) {
+        alert("剪贴板操作失败: " + err);
+    }
+}
+
 //==================================================================
 
 // 配置即时输入的开关
@@ -100,6 +136,7 @@ switchElem.addEventListener("click", function () {
         messageInput.addEventListener("paste", send_paste);
         messageInput.addEventListener("keydown", send_key);
         messageInput.addEventListener("click", clear_text);
+        messageInput.addEventListener("change", send_change);
     } else {
         switchElem.classList.add("off");
         switchElem.classList.remove("on");
@@ -111,6 +148,7 @@ switchElem.addEventListener("click", function () {
         messageInput.removeEventListener("paste", send_paste);
         messageInput.removeEventListener("keydown", send_key);
         messageInput.removeEventListener("click", clear_text);
+        messageInput.removeEventListener("change", send_change);
     }
 });
 

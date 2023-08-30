@@ -1,7 +1,9 @@
 *.exe
 *.pdf
-*.jpg
 *.mp4
 .history
 images*
 *.pyc
+.vscode
+build
+dist

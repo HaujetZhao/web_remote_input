@@ -24,7 +24,11 @@
 
         <textarea id="message" name="message" rows="8"></textarea>
 
-        <button type="submit" onclick="return sendMessage()">发送</button>
+        <div>
+            <button type="submit" onclick="return sendMessage()">发送</button>
+            <button onclick="getClipboardFromServer()">复制</button>
+            <button onclick="sendClipboardToServer()">粘贴</button>
+        </div>
 
     </form>
 
