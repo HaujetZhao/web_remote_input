@@ -1,5 +1,4 @@
-import socket, ssl, os
-
+import socket, ssl, os, sys
 
 import qrcode
 import keyboard
@@ -7,6 +6,8 @@ import pyclip
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
+# 关闭错误输出
+sys.stderr = open(os.devnull, 'w')
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -120,6 +121,7 @@ def main():
     ssl_params = {
         'keyfile': 'key.pem',
         'certfile': 'cert.pem',
+        'do_handshake_on_connect': False, 
     }
     
     # socketio.run(app, host="0.0.0.0", port=port, debug=False)
