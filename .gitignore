@@ -7,3 +7,4 @@ images*
 .vscode
 build
 dist
+qr.png

@@ -9,8 +9,8 @@
 
 <body>
     
-
-    <form id="message-form" onsubmit="return sendMessage()">
+    <!-- return false 是为了阻止点击按钮导致提交表单（这会使页面刷新） -->
+    <form id="message-form" onsubmit="return false"> 
 
         <div class="switch-container">
             <label class="switch-label" for="switch">即时输入</label>
@@ -25,9 +25,9 @@
         <textarea id="message" name="message" rows="8"></textarea>
 
         <div>
-            <button type="submit" onclick="return sendMessage()">发送</button>
-            <button onclick="getClipboardFromServer()">复制</button>
-            <button onclick="sendClipboardToServer()">粘贴</button>
+            <button id="submit" onclick="sendMessage()">发送</button>
+            <button onclick="getClipboardFromServer()">拉取</button>
+            <button onclick="sendClipboardToServer()">推送</button>
         </div>
 
     </form>

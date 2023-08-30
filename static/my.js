@@ -14,6 +14,7 @@ var messageInput = document.getElementById("message");
 
 //==================================================================
 
+
 // 按下发送按钮，发送输入框中全部的内容，并清空输入框
 function sendMessage() {
     var message = messageInput.value;
@@ -90,15 +91,20 @@ function send_change(event) {
 //========================关于获取、设置服务端剪贴板==========================================
 
 
+// 在 Safari 上有安全限制，写入剪贴板必须在一个用户操作后
+// 同时，在一个 Promise 之后，无法再写入剪贴板
+// 解决办法是给 navigator.clipboard.write 一个异步 Promise，让这个 Promise 拉取内容
 async function getClipboardFromServer() {
-    const response = await fetch('/get-clipboard');
-    const data = await response.json();
-    
-    try {
-        await navigator.clipboard.writeText(data.content);
-    } catch (err) {
-        alert("剪贴板操作失败: " + err);
-    }
+  try {
+    const text = new ClipboardItem({
+      "text/plain": fetch('/get-clipboard')
+        .then(response => response.json())
+        .then(data => data.content)
+    })
+    navigator.clipboard.write([text])
+  } catch (err) {
+      alert("剪贴板拉取失败: " + err);
+  }
 }
 
 async function sendClipboardToServer() {
@@ -113,7 +119,7 @@ async function sendClipboardToServer() {
             body: formData
         });
     } catch (err) {
-        alert("剪贴板操作失败: " + err);
+        alert("剪贴板推送失败: " + err);
     }
 }
 
@@ -122,7 +128,7 @@ async function sendClipboardToServer() {
 // 配置即时输入的开关
 var switchElem = document.getElementById("switch");
 var on = false;
-var sendButton = document.querySelector("#message-form button[type=submit]");
+var sendButton = document.querySelector("#message-form button[id=submit]");
 switchElem.addEventListener("click", function () {
     on = !on;
     if (on) {
