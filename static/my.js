@@ -14,11 +14,10 @@ var messageInput = document.getElementById("message");
 
 //==================================================================
 
-
 // 按下发送按钮，发送输入框中全部的内容，并清空输入框
 function sendMessage() {
     var message = messageInput.value;
-    
+
     socket.emit("message", message);
     messageInput.value = "";
 
@@ -95,25 +94,27 @@ function send_change(event) {
 // 同时，在一个 Promise 之后，无法再写入剪贴板
 // 解决办法是给 navigator.clipboard.write 一个异步 Promise，让这个 Promise 拉取内容
 async function getClipboardFromServer() {
-  try {
-    const text = new ClipboardItem({
-      "text/plain": fetch('/get-clipboard')
-        .then(response => response.json())
-        .then(data => data.content)
-    })
-    navigator.clipboard.write([text])
-  } catch (err) {
-      alert("剪贴板拉取失败: " + err);
-  }
+    clear_text()
+    try {
+        const text = new ClipboardItem({
+            "text/plain": fetch('/get-clipboard')
+                .then(response => response.json())
+                .then(data => data.content)
+        })
+        navigator.clipboard.write([text])
+    } catch (err) {
+        alert("剪贴板拉取失败: " + err);
+    }
 }
 
 async function sendClipboardToServer() {
+    clear_text()
     try {
         const text = await navigator.clipboard.readText();
 
         const formData = new FormData();
         formData.append("clipboard", text);
-        
+
         fetch('/set-clipboard', {
             method: 'POST',
             body: formData
@@ -162,7 +163,7 @@ switchElem.addEventListener("click", function () {
 //==================================================================
 
 // 打开网页时，直接聚焦到输入框
-window.onload = function() {
+window.onload = function () {
     var messageInput = document.getElementById("message");
     messageInput.focus();
     messageInput.click();
