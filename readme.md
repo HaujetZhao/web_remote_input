@@ -13,8 +13,8 @@
 
 此外还可以用于同步剪贴板，有两个按钮：
 
-- 获取：将「服务端的剪贴板」复制到「本地剪贴板」
-- 推送：将「本地的剪贴板」上传到「服务端剪贴板」
+- 拉取：将「服务端的剪贴板」拉取到「本地剪贴板」
+- 推送：将「本地的剪贴板」推送到「服务端剪贴板」
 
 ## 使用方法
 
@@ -24,7 +24,11 @@
 pip install -r requirements.txt
 ```
 
-然后直接打开 `app.py` 脚本就可以了，用手机端访问电脑的这个端口就可以了。
+然后在终端打开文件夹，执行 `python app.py` 运行脚本后，用手机端访问电脑的这个端口就可以了。
+
+注意：
+1. 要确保手机、电脑连接到同一局域网了。
+2. 第一次运行，Windows 会有防火墙授权提示，要允许通过
 
 
 
@@ -32,7 +36,9 @@ pip install -r requirements.txt
 
 
 
-使用视频：https://raw.githubusercontent.com/HaujetZhao/web_remote_input/master/assets/%E4%BD%BF%E7%94%A8%E8%A7%86%E9%A2%91.mp4
+使用视频：
+
+https://raw.githubusercontent.com/HaujetZhao/web_remote_input/master/assets/%E4%BD%BF%E7%94%A8%E8%A7%86%E9%A2%91.mp4
 
 ## 问题
 
