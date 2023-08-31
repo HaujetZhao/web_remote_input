@@ -1,6 +1,5 @@
 *.exe
 *.pdf
-*.mp4
 .history
 images*
 *.pyc
