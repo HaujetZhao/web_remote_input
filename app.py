@@ -1,4 +1,5 @@
 import socket, ssl, os, sys
+import psutil
 
 import qrcode
 import keyboard
@@ -104,7 +105,19 @@ def handle_key(key):
 
 
 def main():
-    ip = socket.gethostbyname(socket.gethostname())
+    adaptors = []
+    for name, addrs in psutil.net_if_addrs().items():
+        for addr in addrs:
+            if addr.family != 2: continue
+            adaptors.append((name, addr.address))
+    for index, adaptor in enumerate(adaptors):
+        print(f'{index:2}. {adaptor[0]}')
+    while True:
+        try: 
+            index = int(input(f'请选择网络适配器序号（用于生成二维码）：'))
+            if index >= 0 and index < len(adaptors): break
+        except: ...
+    ip = adaptors[index][1]
     port = 5000
     url = f'请用手机访问 https://{ip}:{port}'
     
