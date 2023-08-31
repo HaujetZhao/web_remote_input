@@ -24,7 +24,7 @@
 pip install -r requirements.txt
 ```
 
-然后直接打开 `app.py` 脚本就可以了，用手机端访问电脑的这个端口就可以了。
+然后在终端打开文件夹，执行 `python app.py` 运行脚本后，用手机端访问电脑的这个端口就可以了。
 
 
 
