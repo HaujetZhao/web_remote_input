@@ -90,22 +90,38 @@ function send_change(event) {
 //========================关于获取、设置服务端剪贴板==========================================
 
 
-// 在 Safari 上有安全限制，写入剪贴板必须在一个用户操作后
-// 同时，在一个 Promise 之后，无法再写入剪贴板
-// 解决办法是给 navigator.clipboard.write 一个异步 Promise，让这个 Promise 拉取内容
 async function getClipboardFromServer() {
     clear_text()
     try {
+        // 在 Safari 上有安全限制，写入剪贴板必须在一个用户操作后
+        // 复制异步获取的数据也是不允许写入剪贴板的
+        // 解决办法是不要在异步的上下文调用Clipboard API, 而是反过来给Clipboard API一个异步Promise
+        // 这样, Clipboard API 就算是在通过用户交互直接触发的同步上下文中调用的
         const text = new ClipboardItem({
             "text/plain": fetch('/get-clipboard')
                 .then(response => response.json())
                 .then(data => data.content)
+                .then(text => new Blob([text], { type: "text/plain" }))
         })
         navigator.clipboard.write([text])
     } catch (err) {
-        alert("剪贴板拉取失败: " + err);
+        if (err instanceof TypeError) {
+            // 在安卓 Chrome 上，似乎构建 ClipboardItem 需要一个实际的 Blob
+            // 如果在给它一个 Promise 就会出错 TypeError: Failed to construct 'ClipboardItem'
+            // 所以捕获这个错误后，构建实际的 Blob，再写给剪贴板
+            const response = await fetch('/get-clipboard');
+            const data = await response.json();
+            const blob = new Blob([data.content], { type: "text/plain" });
+            const clipboardItem = new ClipboardItem({
+                "text/plain": blob
+            });
+            await navigator.clipboard.write([clipboardItem]);
+        } else {
+            alert("剪贴板拉取失败: " + err);
+        }
     }
 }
+
 
 async function sendClipboardToServer() {
     clear_text()

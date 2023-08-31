@@ -19,21 +19,22 @@ def index():
 
 @app.route('/get-clipboard', methods=['GET'])
 def get_clipboard():
-    # 网页端获取服务端的剪贴板文字
+    # 请求拉取剪贴板
+    print(f'收到拉取请求，来自 IP 地址 {request.remote_addr}\n')
     return jsonify({"content": pyclip.paste().decode('utf-8')})
 
 @app.route('/set-clipboard', methods=['POST'])
 def set_clipboard():
-    # 网页端将剪贴板发送到服务端，服务端将收到的文字复制到剪贴板
+    # 收到剪贴板推送
     clipboard_content = request.form.get('clipboard')
     pyclip.copy(clipboard_content)
-    print(f"Received clipboard content: {clipboard_content}")
+    print(f'收到推送内容，来自 IP 地址 {request.remote_addr}，内容是：{clipboard_content}\n')
     return "Clipboard content received."
 
 @socketio.on("message")
 def handle_message(message):
     # message 是一段话，由发送按钮产生
-    print(f'message: {message}')
+    # print(f'message: {message}')
     keyboard.write(message)
 
 @socketio.on("input")
@@ -42,7 +43,7 @@ def handle_char(input: str):
     # 但是手机端打的中文、符号，也是以 char 形式传过来
     # 甚至在手机语音输入时，这个 char 是连续的好几个字
     # input = input.lstrip(',.，。')
-    print(f'input: {input}\n')
+    # print(f'input: {input}\n')
 
     i = 0
 
@@ -64,14 +65,14 @@ def handle_word(word):
     # word 指的是中文字词，主要是中文输入法会拦截按键
     # 输入法的一个上屏就是 word
     word = word.strip(',.，。')
-    print(f'word: {word}')
+    # print(f'word: {word}')
     keyboard.write(word)
 
 
 @socketio.on("paste")
 def handle_paste(paste):
     # 这是指被粘贴的文本
-    print(f'paste: {paste}')
+    # print(f'paste: {paste}')
     keyboard.write(paste)
 
 
@@ -82,13 +83,14 @@ def handle_event(event):
 
 @socketio.on("change")
 def handle_change(event):
-    print(f'event: {event}')
+    # print(f'event: {event}')
+    ...
 
 @socketio.on("key")
 def handle_key(key):
     # key 是按键事件，例如 a b c d Backspace、ArrowLeft 等
     # 手机端的输入法也会把一些词句作为按键发过来，所以要用白名单，只接收合法名字的按键
-    print(f'key: {key}')
+    # print(f'key: {key}')
     match key:
         case 'ArrowUp' | 'ArrowDown'| 'ArrowLeft'|'ArrowRight' :
             keyboard.send(key[5:])
@@ -104,7 +106,7 @@ def handle_key(key):
 def main():
     ip = socket.gethostbyname(socket.gethostname())
     port = 5000
-    url = f'https://{ip}:{port}'
+    url = f'请用手机访问 https://{ip}:{port}'
     
     qr = qrcode.QRCode()
     qr.add_data(url)
