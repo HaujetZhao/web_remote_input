@@ -6,3 +6,4 @@ gevent
 pyclip
 qrcode
 keyboard
+psutil
