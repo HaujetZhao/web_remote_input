@@ -32,7 +32,9 @@ pip install -r requirements.txt
 
 
 
-使用视频：https://raw.githubusercontent.com/HaujetZhao/web_remote_input/master/assets/%E4%BD%BF%E7%94%A8%E8%A7%86%E9%A2%91.mp4
+使用视频：
+
+https://raw.githubusercontent.com/HaujetZhao/web_remote_input/master/assets/%E4%BD%BF%E7%94%A8%E8%A7%86%E9%A2%91.mp4
 
 ## 问题
 
