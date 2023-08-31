@@ -119,12 +119,12 @@ def main():
         except: ...
     ip = adaptors[index][1]
     port = 5000
-    url = f'请用手机访问 https://{ip}:{port}'
+    url = f'https://{ip}:{port}'
     
     qr = qrcode.QRCode()
     qr.add_data(url)
     qr.print_ascii()
-    print(url + '\n\n')
+    print(f'请用手机访问 {url}' + '\n\n')
 
     qr.make(fit=True)
     qr_file = "qr.png"
