@@ -26,6 +26,10 @@ pip install -r requirements.txt
 
 然后在终端打开文件夹，执行 `python app.py` 运行脚本后，用手机端访问电脑的这个端口就可以了。
 
+注意：
+1. 要确保手机、电脑连接到同一局域网了。
+2. 第一次运行，Windows 会有防火墙授权提示，要允许通过
+
 
 
 ![使用界面](assets/使用界面.jpg)
