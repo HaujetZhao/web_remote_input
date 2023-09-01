@@ -122,17 +122,12 @@ def handle_key(key):
 
 
 def main():
-    adaptors = []
-    for name, addrs in psutil.net_if_addrs().items():
-        for addr in addrs:
-            if addr.family != 2: continue
-            adaptors.append((name, addr.address))
-    for index, adaptor in enumerate(adaptors):
-        print(f'{index:2}. {adaptor[0]}')
+    adaptors = [(name, addr.address) for name, addrs in psutil.net_if_addrs().items() for addr in addrs if addr.family == 2]
+    for index, adaptor in enumerate(adaptors): print(f'{index:2}. {adaptor[0]}')
+    prompt = f'请选择网络适配器序号（用于生成二维码）：'
     while True:
         try: 
-            index = int(input(f'请选择网络适配器序号（用于生成二维码）：'))
-            if index >= 0 and index < len(adaptors): break
+            if index := int(input(prompt)) >= 0 and index < len(adaptors): break
         except: ...
     ip = adaptors[index][1]
     port = 5000
