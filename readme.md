@@ -44,7 +44,7 @@ https://raw.githubusercontent.com/HaujetZhao/web_remote_input/master/assets/%E4%
 
 ### SSL 自签名证书
 
-由于获取剪贴板和设置剪贴板的 API 均需要 HTTPS ，因此只得设置自签名证书，客户端会提示 https 不安全，需要手动信任。此外，在服务端会出现关于客户端 SSL 证书认证失败的报错，我有没找到关闭这个报错的办法，只能把 stderr 关了糊弄过去，反正也不影响使用。
+由于获取剪贴板和设置剪贴板的 API 均需要 HTTPS ，因此只得设置自签名证书，客户端会提示 https 不安全，需要手动信任。
 
 ### iOS 端语音实时输入
 

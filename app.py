@@ -7,8 +7,25 @@ import pyclip
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
-# 关闭错误输出
-sys.stderr = open(os.devnull, 'w')
+
+# ======================================================================
+# 猴子补丁，不让 eventlet 打印 ssl 相关的 Exception 信息
+
+import eventlet
+
+def remove_descriptor(self, fileno):
+    try: self.remove_descriptor(fileno)
+    except: ...
+eventlet.hubs.hub.BaseHub.squelch_exception = lambda self, fileno, *args, **kwds: remove_descriptor(self, fileno)
+
+run_bak = eventlet.hubs.hub.BaseHub.run
+def run_new(self, *args, **kwargs):
+    self.debug_exceptions = False
+    run_bak(self, *args, **kwargs)
+eventlet.hubs.hub.BaseHub.run = run_new
+
+# ======================================================================
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -139,7 +156,6 @@ def main():
         'do_handshake_on_connect': False, 
     }
     
-    # socketio.run(app, host="0.0.0.0", port=port, debug=False)
     socketio.run(app, host="0.0.0.0", port=port, debug=False, **ssl_params)
 
 if __name__ == "__main__":
