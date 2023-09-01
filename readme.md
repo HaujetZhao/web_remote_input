@@ -18,7 +18,7 @@
 
 ## 使用方法
 
-这是 python 脚本，先安装依赖：
+这是 python 脚本，需要 Python3.10 或更高的版本，先安装依赖：
 
 ```
 pip install -r requirements.txt
