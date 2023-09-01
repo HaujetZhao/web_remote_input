@@ -127,7 +127,7 @@ def main():
     prompt = f'请选择网络适配器序号（用于生成二维码）：'
     while True:
         try: 
-            if index := int(input(prompt)) >= 0 and index < len(adaptors): break
+            if (index := int(input(prompt))) >= 0 and index < len(adaptors): break
         except: ...
     ip = adaptors[index][1]
     port = 5000
@@ -142,7 +142,8 @@ def main():
     qr_file = "qr.png"
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(qr_file)
-    os.startfile(qr_file)
+	#    os.startfile(qr_file)
+    os.system(f'mspaint {qr_file}')
 
     # 指定 SSL 参数
     ssl_params = {
