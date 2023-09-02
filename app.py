@@ -1,4 +1,4 @@
-import socket, ssl, os, sys
+import socket, ssl, os, sys, subprocess
 import psutil
 
 import qrcode
@@ -142,7 +142,7 @@ def main():
     qr_file = "qr.png"
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(qr_file)
-    try: os.system(f'mspaint {qr_file}')  # 如果在 Win 上，用画图工具打开二维码图片
+    try: subprocess.Popen(f'mspaint {qr_file}')  # 如果在 Win 上，用画图工具打开二维码图片
     except: os.startfile(qr_file)         # 如果不是 Win，就用系统默认程序打开二维码图片
 
     # 指定 SSL 参数
